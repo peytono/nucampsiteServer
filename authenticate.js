@@ -45,6 +45,7 @@ exports.verifyAdmin = (req, res, next) => {
         err.status = 403;
         return next(err);
     } else {
-        return next;
+        return next();
+        //^i'm returning 'next', but check syntax for referring to 'next'  callback param. is it a variable or function? how do you call function if there are no params to pass
     }
 };

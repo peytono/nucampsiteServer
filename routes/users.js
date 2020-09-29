@@ -7,7 +7,6 @@ const router = express.Router();
 
 /* GET users listing. */
 router.get('/', authenticate.verifyUser, authenticate.verifyAdmin, function(req, res, next) {
-  if (req.user.admin) {
     User.find()
     .then(users => {
       res.statusCode = 200;
@@ -15,11 +14,6 @@ router.get('/', authenticate.verifyUser, authenticate.verifyAdmin, function(req,
       res.json(users);
     })
     .catch(err => next(err));
-  } else {
-    const err = new Error('You are not authorized to perform this operation!');
-    err.status = 403;
-    return next(err);
-  }
 });
 
 router.post('/signup', (req, res) => {
@@ -68,6 +62,7 @@ router.get('/logout', (req, res, next) => {
     res.clearCookie('session-id');
     res.redirect('/');
   } else {
+    console.log(req.session);
     const err = new Error('You are not logged in!');
     err.status = 401;
     return next(err);
